@@ -1,0 +1,15 @@
+{
+  "name": "audio-manager",
+  "version": "1.0.0",
+  "description": "app to help manage audio output of devices",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ainzsoup",
+  "license": "ISC",
+  "dependencies": {
+    "readline": "^1.3.0",
+    "shelljs": "^0.8.5"
+  }
+}
