@@ -34,6 +34,19 @@ Command-line tool for managing audio outputs and creating combined audio sinks. 
    - comb: Create a combined audio sink with multiple output devices.
    - del: Delete a combined audio sink.
    - exit: Exit the Audio-manager.
+## Run it from anywhere
+1. Make sure you're in the root of the project directory and run
+   ```bash
+   npm install -g .
+2. Now you can run the audio manager from anywhere on your terminal
+   ```bash
+   audio
+NB: To change the name of the command, open the package.json file and change "audio" to your desired name
+   ```json
+  "bin": {
+		"audio": "./app.js"
+	}
+```
 
 ## Contributing
 Contributions are welcome! If you find a bug or want to suggest an improvement, please open an issue or create a pull request.
