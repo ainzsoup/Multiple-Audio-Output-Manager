@@ -38,7 +38,7 @@ Command-line tool for managing audio outputs and creating combined audio sinks. 
 1. Make sure you're in the root of the project directory and run
    ```bash
    npm install -g .
-2. Now you can run the audio manager from anywhere on your terminal
+2. Now you can run the audio manager from anywhere on your terminal by simply running
    ```bash
    audio
 NB: To change the name of the command, open the package.json file and change "audio" to your desired name
