@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import shell from 'shelljs';
 import readline from 'readline';
 import { PulseAudio } from 'pulseaudio.js';
@@ -161,3 +162,4 @@ async function main () {
 	}
 }
 main();
+
