@@ -1,4 +1,4 @@
-# Pactl-Multiple-Output-Manager v1.0
+# Multiple-Audio-Output-Manager v1.0
 Command-line tool for managing audio outputs and creating combined audio sinks. It interacts with PulseAudio to provide basic audio management functionality right from your terminal.
 
 ## Features
