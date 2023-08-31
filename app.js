@@ -43,7 +43,7 @@ function listSinks(sinks, combs = true) {
 	console.log(`${red}Available Devices:${reset}`);
 	for (let sink of sinks.devices)
 		console.log(sink.index, sink.description);
-	if (combs.length > 0) {
+	if (combs && sinks.combs.length > 0) {
 		console.log(`${red}Available combs:${reset}`);
 		for (let sink of sinks.combs)
 			console.log(sink.index, sink.description);
@@ -91,60 +91,71 @@ async function switchOutput (pa, sinks) {
 }
 
 async function main () {
-	const pa = new PulseAudio();
-	await pa.connect();
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-	console.log('Welcome to scuffed Audio-manager v1.0.\nType "help" for more information.')
-    const promptUser = async () => {
-		let sinks = await updateSinks(pa);
-        rl.question(`> `, async (command) => {
-            switch (command) {
-				case '':
-					break;
-				case 'clear':
-					console.clear();
-					break;
-                case 'help':
-                    help();
-                    break;
-                case 'list':
-					listSinks(sinks);
-                    break;
-				case 'comb':
-					if (sinks.devices.length < 2)
-						console.log('Not enough devices to combine.');
-					else
-						listSinks(sinks, false)
-						rl.question('type indexes of devices to comb space sparated\n> ', async (devices) => {
-							await combineSinks(devices);
-							promptUser();
-						});
-						
-					break;
-				case 'del':
-					if (listCombs(sinks)) {
-						rl.question('> ', async (number) => {
-							const moduleIndex = parseInt(number);
-							await unloadModule(moduleIndex);
-							promptUser();
-						});
-						return;
-					}
-					break;
-				case 'switch':
-						await switchOutput(pa, sinks);
-					break;
-                default:
-                    console.log('Unknown command. Type "help" for available commands.');
-            }
+	try {
+		const pa = new PulseAudio();
+		await pa.connect();
+		const rl = readline.createInterface({
+			input: process.stdin,
+			output: process.stdout
+		});
+		console.log('Welcome to scuffed Audio-manager v1.0.\nType "help" for more information.')
+		const promptUser = async () => {
+			let sinks = await updateSinks(pa);
+			rl.question(`> `, async (command) => {
+				command = command.trim();
+				switch (command) {
+					case '':
+						break;
+					case 'clear':
+						console.clear();
+						break;
+					case 'help':
+						help();
+						break;
+					case 'list':
+						listSinks(sinks);
+						break;
+					case 'comb':
+						if (sinks.devices.length < 2)
+							console.log('Not enough devices to combine.');
+						else
+							listSinks(sinks, false)
+							rl.question('type indexes of devices to comb space sparated\n> ', async (devices) => {
+								await combineSinks(devices);
+								promptUser();
+							});
+							
+						break;
+					case 'del':
+						if (listCombs(sinks)) {
+							rl.question('> ', async (number) => {
+								const moduleIndex = parseInt(number);
+								await unloadModule(moduleIndex);
+								promptUser();
+							});
+							return;
+						}
+						break;
+					case 'switch':
+							await switchOutput(pa, sinks);
+						break;
+					case 'exit':
+						rl.close();
+						pa.disconnect();
+						console.log('Goodbye.');
+						process.exit(0);
+					default:
+						console.log('Unknown command. Type "help" for available commands.');
+				}
 
-            promptUser();
-        });
-    };
+				promptUser();
+			});
+		};
 
-    promptUser();
+		promptUser();
+	}
+	catch (err) {
+		console.error(err);
+	}
 }
 main();
