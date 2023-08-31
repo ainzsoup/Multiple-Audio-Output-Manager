@@ -87,7 +87,7 @@ async function switchOutput (pa, sinks) {
 	const prompt = PromptSync();
 	const output = prompt('Enter index of output to switch to >');
 	await pa.setDefaultSink(output);
-	console.log('Output switched to:', sinks.devices.find(sink => sink.index === parseInt(output)).description);
+	console.log('Output switched to:', sinks.devices.concat(sinks.combs).find(sink => sink.index === parseInt(output)).description);
 }
 
 async function main () {
