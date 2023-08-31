@@ -17,7 +17,7 @@ Command-line tool for managing audio outputs and creating combined audio sinks. 
 
 1. Clone this repository to your local machine:
    ```bash
-   git@github.com:ainzsoup/Pactl-Multiple-Output-Manager.git
+   git clone git@github.com:ainzsoup/Pactl-Multiple-Output-Manager.git
 
 2. Navigate to the project directory:
     ```bash
