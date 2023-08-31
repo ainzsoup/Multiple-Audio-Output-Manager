@@ -1,7 +1,6 @@
 import shell from 'shelljs';
 import readline from 'readline';
 import { PulseAudio } from 'pulseaudio.js';
-import prompt from 'prompt-sync';
 import PromptSync from 'prompt-sync';
 
 const green = '\x1b[32m';
@@ -37,12 +36,14 @@ function help() {
 	console.log(list);
 }
 
-function listSinks(sinks, combs = true) {
+async function listSinks(sinks, combs = true) {
 	console.clear();
+	const defaultSink = shell.exec('pactl get-default-sink').trim();
 	console.log('------------------------------------------');
 	console.log(`${red}Available Devices:${reset}`);
-	for (let sink of sinks.devices)
-		console.log(sink.index, sink.description);
+	for (let sink of sinks.devices) {
+		console.log(`${sink.name == defaultSink ? green : ''} ${sink.index} ${sink.description}${reset}`);
+	}
 	if (combs && sinks.combs.length > 0) {
 		console.log(`${red}Available combs:${reset}`);
 		for (let sink of sinks.combs)
@@ -52,6 +53,7 @@ function listSinks(sinks, combs = true) {
 }
 
 async function updateSinks(pa) {
+
 	let sinks = await pa.getAllSinks();
 	let devices = [];
 	let combs = [];
@@ -83,7 +85,7 @@ function listCombs(sinks) {
 }
 
 async function switchOutput (pa, sinks) {
-	listSinks(sinks);
+	await listSinks(sinks);
 	const prompt = PromptSync();
 	const output = prompt('Enter index of output to switch to >');
 	await pa.setDefaultSink(output);
@@ -113,13 +115,13 @@ async function main () {
 						help();
 						break;
 					case 'list':
-						listSinks(sinks);
+						await listSinks(sinks);
 						break;
 					case 'comb':
 						if (sinks.devices.length < 2)
 							console.log('Not enough devices to combine.');
 						else
-							listSinks(sinks, false)
+							await listSinks(sinks, false)
 							rl.question('type indexes of devices to comb space sparated\n> ', async (devices) => {
 								await combineSinks(devices);
 								promptUser();
