@@ -17,7 +17,6 @@ async function combineSinks(devices) {
 	const description = prompt('Enter Name >');
 
     const pactlCommand = `pactl load-module module-combine-sink slaves="${slaves}" sink_properties="device.description=${description}" `;
-	console.log (pactlCommand);
 
     const result = shell.exec(pactlCommand);
 
@@ -38,8 +37,8 @@ function help() {
 }
 
 async function listSinks(sinks, combs = true) {
-	console.clear();
 	const defaultSink = shell.exec('pactl get-default-sink').trim();
+	console.clear();
 	console.log('------------------------------------------');
 	console.log(`${red}Available Devices:${reset}`);
 	for (let sink of sinks.devices) {
