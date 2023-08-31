@@ -43,7 +43,7 @@ function listSinks(sinks, combs = true) {
 	console.log(`${red}Available Devices:${reset}`);
 	for (let sink of sinks.devices)
 		console.log(sink.index, sink.description);
-	if (combs) {
+	if (combs.length > 0) {
 		console.log(`${red}Available combs:${reset}`);
 		for (let sink of sinks.combs)
 			console.log(sink.index, sink.description);
@@ -87,7 +87,7 @@ async function switchOutput (pa, sinks) {
 	const prompt = PromptSync();
 	const output = prompt('Enter index of output to switch to >');
 	await pa.setDefaultSink(output);
-	console.log('Output switched to:', sinks.devices.concat(sinks.combs).find(sink => sink.index === parseInt(output)).description);
+	console.log(`${green}Output switched to: ${sinks.devices.concat(sinks.combs).find(sink => sink.index === parseInt(output)).description}${reset}`);
 }
 
 async function main () {
