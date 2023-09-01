@@ -47,7 +47,7 @@ async function listSinks(sinks, combs = true) {
 	if (combs && sinks.combs.length > 0) {
 		console.log(`${red}Available combs:${reset}`);
 		for (let sink of sinks.combs)
-			console.log(sink.index, sink.description);
+			console.log(`${sink.name == defaultSink ? green : ''} ${sink.index} ${sink.description}${reset}`);
 	}
 	console.log('------------------------------------------');
 }
@@ -157,7 +157,7 @@ async function main () {
 		promptUser();
 	}
 	catch (err) {
-		console.error(err);
+		main();
 	}
 }
 main();
